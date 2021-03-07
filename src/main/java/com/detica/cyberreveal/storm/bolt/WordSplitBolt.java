@@ -8,6 +8,11 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
 /**
+ * Max's Changes
+ *
+ * 1. Changed the previous regex tIf we see anything that isn't a word then split
+ *
+/**
  * A storm bolt which splits a line into words.
  */
 public class WordSplitBolt extends BaseBasicBolt {
@@ -18,14 +23,16 @@ public class WordSplitBolt extends BaseBasicBolt {
 	public void execute(final Tuple tuple, final BasicOutputCollector collector) {
 		String line = tuple.getStringByField("line");
 		// split line by whitespace and punctuation characters
-		String[] words = line
-				.split("\\s|[\\.,\\?!:;'\"£$%^&\\*\\(\\)\\-\\=\\_\\+\\[\\]\\{\\}@\\#\\~\\>\\<]");
+		// 1.
+		String[] words = line.split("[^\\w]");
 		for (int i = 0; i < words.length; i++) {
 			String word = words[i].toLowerCase().trim();
+			System.out.println("help "  +word + " ");
 			if (word.length() > 0) {
 				collector.emit(new Values(word));
 			}
 		}
+		System.out.println();
 	}
 
 	@Override
