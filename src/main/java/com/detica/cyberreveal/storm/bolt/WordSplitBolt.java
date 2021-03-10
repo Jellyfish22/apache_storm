@@ -10,7 +10,9 @@ import backtype.storm.tuple.Values;
 /**
  * Max's Changes
  *
- * 1. Changed the previous regex tIf we see anything that isn't a word then split
+ * 1. Changed the previous regex to: if we see anything that isn't a word then split
+ * 	  ^ = when placed inside brackets it means "not".
+ * 	  \\w = split anything that's a word character
  *
 /**
  * A storm bolt which splits a line into words.
@@ -27,7 +29,6 @@ public class WordSplitBolt extends BaseBasicBolt {
 		String[] words = line.split("[^\\w]");
 		for (int i = 0; i < words.length; i++) {
 			String word = words[i].toLowerCase().trim();
-			System.out.println("help "  +word + " ");
 			if (word.length() > 0) {
 				collector.emit(new Values(word));
 			}
